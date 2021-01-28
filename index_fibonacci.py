@@ -1,6 +1,5 @@
 #  To run this use python index_fibonacci.py
 #  Index of a Fibonacci number
-#  This code will be updated with try except block to handle errors/wrong input
 
 try:
     print(50*'#')
