@@ -1,6 +1,7 @@
 '''
-User will require to input a year to find if it is a leap year or not
+User will require to input a year and program will return a boolean.
 '''
+
 def is_leap(year):
     leap = False
     
