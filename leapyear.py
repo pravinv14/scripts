@@ -1,3 +1,6 @@
+'''
+User will require to input a year to find if it is a leap year or not
+'''
 def is_leap(year):
     leap = False
     
@@ -8,4 +11,4 @@ def is_leap(year):
             return True
     return leap
 
-year = int(input())
+year = int(input("Enter a year : "))
