@@ -1,4 +1,4 @@
-`python scripts`
+`Python Scripts`
 
 
-successful try outs of python script will be uploaded here :)
+successful try outs of python scripts will be uploaded here :)
