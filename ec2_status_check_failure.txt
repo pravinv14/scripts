@@ -1,0 +1,43 @@
+AWS EC2 instance status checks are what monitor OS level health. Below are the reasons due to which the instance status check fail :
+        - Failed system status checks (system status checks were passing successfully in your case)
+        - Incorrect networking or startup configuration
+        - Exhausted resources such as memory, network bandwidth etc.
+        - Corrupted file system
+        - Incompatible kernel
+
+
+system logs of the instance and found ec2 with below errors.
+
+[FAILED] Failed to start Initial cloud-init job (pre-networking).
+[FAILED] Failed to start Raise network interfaces.
+
+Above error indicates that network related services failed and cloud init was not working properly. It is an OS level issue.
+
+1) launched one recovery instance in the same availability zone
+2) detached the root EBS of the instance which was failing the instance health checks.
+3) attached the root EBS of instance to recovery instance.
+4) used below set of commands in order to re install the cloud-init and fix the package dependencies in your OS
+
+    $ sudo -i
+    # mount /dev/xvdf1 /mnt/
+    # mount -o bind /proc /mnt/proc
+    # mount -o bind /dev /mnt/dev.
+    # mount -o bind /sys /mnt/sys
+    # chroot /mnt
+    # ll /etc/resolv.conf
+    # rm -f /etc/resolv.conf
+    # echo "nameserver xxx.xxx.x.x" > /etc/resolv.conf
+    # apt update
+    # apt --fix-missing update
+    # apt remove cloud-init
+    # apt purge cloud-init -y
+    # apt install cloud-init -y
+    # cd /var/lib/cloud/
+    # rm -rf *
+    # cd
+    # exit
+    # umount /mnt/{proc,sys,dev}
+    # umount /mnt
+    # exit
+5) We then detached the volume from recovery instance and attached back to main instance  <i-xxxxxx> and started the instance after attaching the volume.
+6) Instance worked properly.
